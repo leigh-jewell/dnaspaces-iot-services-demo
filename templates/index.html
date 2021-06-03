@@ -31,11 +31,11 @@
               <h5 class="card-title">Firehose API Token<Key></Key></h5>
             </p>
               <p class="card-text">Paste in the DNA Spaces Firehose API token to allow the application to receive data.</p>
-              <div class="input-group mb-3">
+              <div class="input-group mb-1">
                 <form action="" method="post">
                   <div class="form-group">
                     <label for="api_token">API Token:</label>
-                    <input class="form-control" placeholder="Enter API token" id="api_token" name="api_token" value="{{ api_token }}">
+                    <input class="form-control" placeholder="Enter API token" id="api_token" name="api_token" type="password" value="{{ api_token }}">
                   </div>
                   <div class="form-group">
                     <label for="ble_mac">List of BLE MAC to track:</label>
@@ -78,7 +78,7 @@
                         <tbody>
                             {% for mac, ble in ble_tags.items() %}
                                 <tr>
-                                    <td>{{ble['type']}}</td>
+                                    <td>{{ble_mac_names[mac]}}</td>
                                     <td>{{mac}}</td>
                                     <td>{{ble['floor']}}</td>
                                     <td>{{ble['x']}}</td>

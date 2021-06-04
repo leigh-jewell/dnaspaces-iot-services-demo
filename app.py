@@ -26,7 +26,11 @@ def activate_app():
 
 
 def timestamp_to_date(timestamp):
-    return str(datetime.fromtimestamp(timestamp / 1000))
+    try:
+        date = datetime.fromtimestamp(timestamp / 1000)
+    except OSError:
+        date = "No Date"
+    return str(date)
 
 
 def validate_token(check_token):

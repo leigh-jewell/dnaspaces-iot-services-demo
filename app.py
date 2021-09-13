@@ -73,7 +73,7 @@ def get_ble_telemetry_data():
                 next(reader, None)  # skip the headers
                 for row in reader:
                     ble_mac_list.append(row[0])
-                    ble_mac_names[row[0]] = row[5]
+                    ble_mac_names[row[0]] = row[8]
             headers = {'X-API-Key': global_token}
             # Connect to API
             stream_api = requests.get('https://partners.dnaspaces.io/api/partners/v1/firehose/events',

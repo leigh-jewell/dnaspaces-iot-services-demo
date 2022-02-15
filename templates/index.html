@@ -63,31 +63,27 @@
                     <table class="table table-striped medium">
                         <thead>
                             <tr>
-                                <th scope="col">BLE Type</th>
                                 <th scope="col">BLE MAC</th>
                                 <th scope="col">Floor</th>
                                 <th scope="col">X Location</th>
                                 <th scope="col">Y Location</th>
                                 <th scope="col">Temperature</th>
-                                <th scope="col">Battery</th>
-                                <th scope="col">Last Move Time</th>
-                                <th scope="col">Passive Infrared Triggered</th>
-                                <th scope="col">Real Time Clock</th>
+                                <th scope="col">Illuminance</th>
+                                <th scope="col">Air Pressure</th>
+                                <th scope="col">CO2 PPM</th>
                             </tr>
                         </thead>
                         <tbody>
                             {% for mac, ble in ble_tags.items() %}
                                 <tr>
-                                    <td>{{ble_mac_names[mac]}}</td>
                                     <td>{{mac}}</td>
                                     <td>{{ble['floor']}}</td>
                                     <td>{{ble['x']}}</td>
                                     <td>{{ble['y']}}</td>
                                     <td>{{ble['temperature']}}</td>
-                                    <td>{{ble['battery']}}</td>
-                                    <td>{{ble['accelerometer']}}</td>
-                                    <td>{{ble['pirTrigger']}}</td>
-                                    <td>{{ble['clock']}}</td>
+                                    <td>{{ble['illuminance']}}</td>
+                                    <td>{{ble['airPressure']}}</td>
+                                    <td>{{ble['carbonEmissions']}}</td>
                                 </tr>
                             {% endfor %}
                         </tbody>

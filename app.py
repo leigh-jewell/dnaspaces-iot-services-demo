@@ -48,7 +48,7 @@ def get_ble_telemetry_data():
     tag_updates = []
     start_time = datetime.now()
     process_time_secs = 0.0
-    max_wait_secs = 10
+    max_wait_secs = 20
     ble_mac_str = ""
     if global_token == "" and request.method == 'GET':
         return render_template('activate.html', api_token="")
@@ -67,13 +67,8 @@ def get_ble_telemetry_data():
         if request.method == 'POST':
             token = request.form.get('api_token')
             ble_mac_str = request.form.get('ble_mac')
-            if len(ble_mac_str) > 17:
-                lines = ble_mac_str.splitlines()
-                reader = csv.reader(lines, delimiter=',')
-                next(reader, None)  # skip the headers
-                for row in reader:
-                    ble_mac_list.append(row[0])
-                    ble_mac_names[row[0]] = row[8]
+            print(f"BLE MAC {ble_mac_str}")
+            ble_mac_list.append(ble_mac_str)
             headers = {'X-API-Key': global_token}
             # Connect to API
             stream_api = requests.get('https://partners.dnaspaces.io/api/partners/v1/firehose/events',
@@ -98,6 +93,15 @@ def get_ble_telemetry_data():
                             if 'temperature' in data['iotTelemetry']:
                                 ble_tags[device_id]['temperature'] = \
                                     round(data['iotTelemetry']['temperature']['temperatureInCelsius'], 1)
+                            if 'illuminance' in data['iotTelemetry']:
+                                ble_tags[device_id]['illuminance'] = \
+                                    data['iotTelemetry']['illuminance']['value']
+                            if 'airPressure' in data['iotTelemetry']:
+                                ble_tags[device_id]['airPressure'] = \
+                                    data['iotTelemetry']['airPressure']['pressure']
+                            if 'carbonEmissions' in data['iotTelemetry']:
+                                ble_tags[device_id]['carbonEmissions'] = \
+                                    data['iotTelemetry']['carbonEmissions']['co2Ppm']
                             if 'battery' in data['iotTelemetry']:
                                 ble_tags[device_id]['battery'] = data['iotTelemetry']['battery']['value']
                             if 'accelerometer' in data['iotTelemetry']:
@@ -120,7 +124,7 @@ def get_ble_telemetry_data():
                                 tag_updates.append(device_id)
                         # Only grab 10 IOT updates
                         process_time_secs = round((datetime.now() - start_time).total_seconds(), 1)
-                        if len(tag_updates) >= len(ble_mac_list) or process_time_secs > max_wait_secs:
+                        if process_time_secs > max_wait_secs:
                             print('Complete. Time taken', process_time_secs)
                             break
         return render_template('index.html', ble_tags=ble_tags, time_taken=process_time_secs, api_token=global_token,
